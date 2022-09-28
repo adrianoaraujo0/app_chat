@@ -1,0 +1,18 @@
+# This is a generated file; do not edit or check into version control.
+cloud_firestore=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-3.4.9/
+cloud_firestore_web=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-2.8.8/
+firebase_auth=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.10.0/
+firebase_auth_web=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-4.5.0/
+firebase_core=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.23.0/
+firebase_core_web=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.7.2/
+firebase_storage=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-10.3.9/
+firebase_storage_web=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-3.3.7/
+flutter_plugin_android_lifecycle=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.7/
+google_sign_in=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-5.4.2/
+google_sign_in_android=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.1/
+google_sign_in_ios=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_ios-5.5.0/
+google_sign_in_web=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.10.2/
+image_picker=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.8.5+3/
+image_picker_android=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.5+3/
+image_picker_for_web=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_for_web-2.1.8/
+image_picker_ios=/Users/adriano/Tools/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_ios-0.8.6+1/
