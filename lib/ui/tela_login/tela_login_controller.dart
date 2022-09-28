@@ -45,9 +45,8 @@ class TelaLoginController{
   }
 
   fazerLogout(BuildContext context){
-      firebaseAuth.signOut();
-      print("saiu");
-      print(usuario?.email);
+      googleSignIn.signOut();
+
         Navigator.pushReplacement(
             context, 
             MaterialPageRoute(builder: (context) => TelaLogin()));
@@ -57,6 +56,7 @@ class TelaLoginController{
         try{
       final GoogleSignInAccount? googleSignInAccount =
           await googleSignIn.signIn();
+          
 
       final GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount!.authentication;
@@ -70,7 +70,7 @@ class TelaLoginController{
 
       usuario = userCredential.user;
       
-      if(usuario != null){
+    if(usuario != null){
           Navigator.pushReplacement(
             context, 
             MaterialPageRoute(builder: (context) => TelaChat(usuario: usuario!)));
@@ -82,9 +82,6 @@ class TelaLoginController{
           )
         );
     }
-  
-
-    
   }  
 
 }

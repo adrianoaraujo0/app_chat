@@ -44,13 +44,7 @@ class _TelaChatState extends State<TelaChat> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 if(TelaLoginController.usuario!.email == snapshot.data!.docs.last["Usuario"]){
-                  Future.delayed(const Duration(milliseconds: 300)).then((_) =>
-                    telaChatController.scrollListController.animateTo(telaChatController.scrollListController.position.maxScrollExtent, duration: Duration(milliseconds: 100), curve: Curves.easeInOut)
-                  ).then((_) => 
-                    Future.delayed(const Duration(milliseconds: 300)).then((_) =>
-                      telaChatController.scrollListController.animateTo(telaChatController.scrollListController.position.maxScrollExtent, duration: Duration(milliseconds: 100), curve: Curves.easeInOut)
-                    )
-                  );
+                  telaChatController.ultimaMensagem();
                 } 
                 return Expanded(
                   child: listaMensagens(snapshot.data!.docs),
@@ -123,8 +117,8 @@ class _TelaChatState extends State<TelaChat> {
       child: Row(
         children: [
           IconButton(
-            onPressed: () async => telaChatController.capturarImagem(),
-            icon: const Icon(Icons.camera_alt_outlined,  color: Colors.blue,)
+            onPressed: () async => telaChatController.capturarImagem(widget.usuario),
+            icon: const Icon(Icons.add,  color: Colors.blue,)
           ),
           Expanded(
             child: TextField(
