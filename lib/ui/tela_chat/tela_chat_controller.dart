@@ -16,6 +16,9 @@ class TelaChatController {
   User? user;
   String? imagemPath;
   File? file;
+  PlatformFile? pickedFile;
+  UploadTask? uploadTask;
+  
   
 
   ultimaMensagem() async{
@@ -26,56 +29,78 @@ class TelaChatController {
 
   void salvarMensagemFirebase(User usuario) async{
     FirebaseFirestore.instance.collection("chat").add({
-    "usuario": usuario.email,
-    "texto": textoControllerEnviarMensagem.text,
-    "imagem": imagemPath,
-    "time": Timestamp.now(),
-    });
-
-    textoControllerEnviarMensagem.clear();
-    imagemPath = null;
+      "usuario": usuario.email,
+      "texto": textoControllerEnviarMensagem.text,
+      "imagem": null,
+      "arquivo": file,
+      "time": Timestamp.now(),
+      });
+      
+      limparCampoMensagem();
+    
     controllerMudarCorSinalEnviarMensagem.sink.add(false);
   }
 
-   capturarImagem(User usuario) async {
+  void limparCampoMensagem(){
+    textoControllerEnviarMensagem.clear();
+    imagemPath = null;
+  }
+
+   capturarImagem(BuildContext context ,User usuario) async {
+     Navigator.pop(context);
+
     final XFile? imgfile = await ImagePicker().pickImage(source: ImageSource.camera);
-
+ 
     if (imgfile == null) return;
-
-    imagemPath = imgfile.path;
     
-     if (imagemPath != null) {
-      //uploadtask: Uma classe que indica uma tarefa de upload em andamento.
       UploadTask task = FirebaseStorage.instance
           .ref()
           .child(DateTime.now().millisecondsSinceEpoch.toString())
-          .putFile(File(imagemPath!));
-
-      //Um [TaskSnapshot] é retornado como resultado ou processo em andamento de um [Task].
-      // TaskSnapshot taskSnapshot = await task;
-      // String url = await taskSnapshot.ref.getDownloadURL();
-    }
-
-     FirebaseFirestore.instance.collection("chat").add({
-      "usuario": usuario.email,
-      "texto": textoControllerEnviarMensagem.text,
-      "imagem": imagemPath,
-      "time": Timestamp.now(),
-     });
+          .putFile(File(imgfile.path));
+     
+        FirebaseFirestore.instance.collection("chat").add({
+        "usuario": usuario.email,
+        "texto": textoControllerEnviarMensagem.text,
+        "imagem": imgfile.path,
+        "arquivo": null,
+        "time": Timestamp.now(),
+        });
+  
+      limparCampoMensagem();
   }
 
-  void capturarArquivo() async{
+  void selecionarArquivo(BuildContext context ,User usuario) async{
+     Navigator.pop(context);
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['jpg', 'pdf', 'doc']);
-
-    if (result != null) {
-      File path = File(result.files.single.path!);
     
-    } else {
-      // User canceled the picker
-    }
+    if (result == null) return;
+      pickedFile = result.files.first;
 
-  }
+      file = File(result.files.single.path!);
+
+      
+
+      final path = 'files/${pickedFile!.name}';
+      final files = File(pickedFile!.path!);
+
+      final ref = FirebaseStorage.instance.ref().child(path);
+      
+      uploadTask = ref.putFile(files);
+
+      FirebaseFirestore.instance.collection("chat").add({
+        "usuario": usuario.email,
+        "texto": textoControllerEnviarMensagem.text,
+        "imagem": null,
+        "arquivo": files.path,
+        "time": Timestamp.now(),
+        });
+
+      final snapshot = await uploadTask!.whenComplete(() => {});
+      final urlDownload = await snapshot.ref.getDownloadURL();
+      print("Download Link: $urlDownload");
+  }      
+
 
 
 }

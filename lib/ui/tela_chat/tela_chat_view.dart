@@ -51,7 +51,7 @@ class _TelaChatState extends State<TelaChat> {
                 );
               },
             ),
-            enviarMensagem(),
+            enviarMensagem(context),
           ],
         ),
       ),
@@ -99,25 +99,6 @@ class _TelaChatState extends State<TelaChat> {
                   ])
                   ),
                 const SizedBox(height: 4,),
-
-                //validacao com if ternario
-                // SizedBox(
-                //   child: itemLista["imagem"] != null && itemLista["texto"] != null ? 
-                //   Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       Image.file(File(itemLista["imagem"]), height: 230),
-                //       Text("${itemLista["texto"]}", style: const  TextStyle(color: Colors.white70, fontSize: 14)),
-                //     ],
-                //   ) 
-                //   : itemLista["imagem"] != null ?
-                //     Image.file(File(itemLista["imagem"]), height: 230)
-                //   : Text("${itemLista["texto"]}",
-                //   style: const  TextStyle(color: Colors.white70, fontSize: 14)),
-                // ),
-
-
-
                 SizedBox(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +120,7 @@ class _TelaChatState extends State<TelaChat> {
     );
   }
 
-  Widget enviarMensagem() {
+  Widget enviarMensagem(BuildContext context) {
     return Container(
       color: Colors.black12,
       child: Row(
@@ -153,11 +134,11 @@ class _TelaChatState extends State<TelaChat> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () async => telaChatController.capturarImagem(widget.usuario),
+                      onPressed: () async => telaChatController.capturarImagem(context, widget.usuario),
                       icon: const Icon(Icons.photo_camera, size: 30)
                     ),
                     IconButton(
-                      onPressed: () async => telaChatController.capturarImagem(widget.usuario),
+                      onPressed: () async => telaChatController.selecionarArquivo(context ,widget.usuario),
                       icon: const Icon(Icons.upload_file, size: 30)
                     ),
                   ],
