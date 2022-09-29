@@ -40,6 +40,7 @@ class _TelaChatState extends State<TelaChat> {
             StreamBuilder(
               stream: FirebaseFirestore.instance.collection("chat").orderBy("time").snapshots(),
               builder: (context, snapshot) {
+                
                 if (snapshot.data == null) { 
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -105,6 +106,9 @@ class _TelaChatState extends State<TelaChat> {
                     children: [
                       if(itemLista["imagem"] != null)...{
                         Image.file(File(itemLista["imagem"]), height: 230),
+                      },
+                      if(itemLista["arquivo"] != null)...{
+                        Image.file(File(itemLista["arquivo"]), height: 230),
                       },
                       if(itemLista["texto"] != null)...{
                         Text("${itemLista["texto"]}", style: const  TextStyle(color: Colors.white70, fontSize: 14)),
