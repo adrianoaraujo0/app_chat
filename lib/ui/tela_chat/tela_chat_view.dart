@@ -38,12 +38,12 @@ class _TelaChatState extends State<TelaChat> {
         child: Column(
           children: [
             StreamBuilder(
-              stream: FirebaseFirestore.instance.collection("chat").orderBy("Time").snapshots(),
+              stream: FirebaseFirestore.instance.collection("chat").orderBy("time").snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.data == null) { 
                   return const Center(child: CircularProgressIndicator());
                 }
-                if(TelaLoginController.usuario!.email == snapshot.data!.docs.last["Usuario"]){
+                if(TelaLoginController.usuario!.email == snapshot.data!.docs.last["usuario"]){
                   telaChatController.ultimaMensagem();
                 } 
                 return Expanded(
@@ -94,14 +94,42 @@ class _TelaChatState extends State<TelaChat> {
               children: [    
                 Text.rich(
                   TextSpan(children: [
-                    TextSpan(text: itemLista["Usuario"], style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                    TextSpan(text: itemLista["usuario"], style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
                     const TextSpan(text: "   10:33 AM", style: TextStyle(color: Colors.white60, fontSize: 12))
                   ])
                   ),
                 const SizedBox(height: 4,),
+
+                //validacao com if ternario
+                // SizedBox(
+                //   child: itemLista["imagem"] != null && itemLista["texto"] != null ? 
+                //   Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Image.file(File(itemLista["imagem"]), height: 230),
+                //       Text("${itemLista["texto"]}", style: const  TextStyle(color: Colors.white70, fontSize: 14)),
+                //     ],
+                //   ) 
+                //   : itemLista["imagem"] != null ?
+                //     Image.file(File(itemLista["imagem"]), height: 230)
+                //   : Text("${itemLista["texto"]}",
+                //   style: const  TextStyle(color: Colors.white70, fontSize: 14)),
+                // ),
+
+
+
                 SizedBox(
-                  child: itemLista["Imagem"] != null ? Image.file(File(itemLista["Imagem"]), height: 230) : Text("${itemLista["Texto"]}",
-                  style: const  TextStyle(color: Colors.white70, fontSize: 14)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if(itemLista["imagem"] != null)...{
+                        Image.file(File(itemLista["imagem"]), height: 230),
+                      },
+                      if(itemLista["texto"] != null)...{
+                        Text("${itemLista["texto"]}", style: const  TextStyle(color: Colors.white70, fontSize: 14)),
+                      }
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -116,10 +144,31 @@ class _TelaChatState extends State<TelaChat> {
       color: Colors.black12,
       child: Row(
         children: [
-          IconButton(
-            onPressed: () async => telaChatController.capturarImagem(widget.usuario),
-            icon: const Icon(Icons.add,  color: Colors.blue,)
+          PopupMenuButton( 
+            icon: const Icon(Icons.add,  color: Colors.blue,  size: 30),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                height: 40, 
+                child:Row( 
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () async => telaChatController.capturarImagem(widget.usuario),
+                      icon: const Icon(Icons.photo_camera, size: 30)
+                    ),
+                    IconButton(
+                      onPressed: () async => telaChatController.capturarImagem(widget.usuario),
+                      icon: const Icon(Icons.upload_file, size: 30)
+                    ),
+                  ],
+                )
+              )
+            ]
           ),
+          // IconButton(
+          //   onPressed: () async => telaChatController.capturarImagem(widget.usuario),
+          //   icon: const Icon(Icons.add,  color: Colors.blue,)
+          // ),
           Expanded(
             child: TextField(
               onChanged: (value) => telaChatController.controllerMudarCorSinalEnviarMensagem.sink.add(value.isNotEmpty),

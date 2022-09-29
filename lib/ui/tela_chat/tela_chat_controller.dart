@@ -12,6 +12,7 @@ class TelaChatController {
   final TextEditingController textoControllerEnviarMensagem = TextEditingController();
   final BehaviorSubject<bool> controllerMudarCorSinalEnviarMensagem = BehaviorSubject<bool>();
   ScrollController scrollListController = ScrollController();
+  bool carregandoImagem = false;
   User? user;
   String? imagemPath;
   File? file;
@@ -25,9 +26,10 @@ class TelaChatController {
 
   void salvarMensagemFirebase(User usuario) async{
     FirebaseFirestore.instance.collection("chat").add({
-    "Usuario": usuario.email,
-    "Texto": textoControllerEnviarMensagem.text,
-    "Time": Timestamp.now(),
+    "usuario": usuario.email,
+    "texto": textoControllerEnviarMensagem.text,
+    "imagem": imagemPath,
+    "time": Timestamp.now(),
     });
 
     textoControllerEnviarMensagem.clear();
@@ -35,28 +37,30 @@ class TelaChatController {
     controllerMudarCorSinalEnviarMensagem.sink.add(false);
   }
 
-  void capturarImagem(User usuario) async {
+   capturarImagem(User usuario) async {
     final XFile? imgfile = await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (imgfile == null) return;
 
     imagemPath = imgfile.path;
-
+    
      if (imagemPath != null) {
       //uploadtask: Uma classe que indica uma tarefa de upload em andamento.
       UploadTask task = FirebaseStorage.instance
           .ref()
           .child(DateTime.now().millisecondsSinceEpoch.toString())
           .putFile(File(imagemPath!));
+
       //Um [TaskSnapshot] é retornado como resultado ou processo em andamento de um [Task].
-      TaskSnapshot taskSnapshot = await task;
-      String url = await taskSnapshot.ref.getDownloadURL();
+      // TaskSnapshot taskSnapshot = await task;
+      // String url = await taskSnapshot.ref.getDownloadURL();
     }
 
      FirebaseFirestore.instance.collection("chat").add({
-      "Usuario": usuario.email,
-      "Imagem": imagemPath,
-      "Time": Timestamp.now(),
+      "usuario": usuario.email,
+      "texto": textoControllerEnviarMensagem.text,
+      "imagem": imagemPath,
+      "time": Timestamp.now(),
      });
   }
 
