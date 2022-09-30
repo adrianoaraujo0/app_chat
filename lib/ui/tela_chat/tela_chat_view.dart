@@ -99,7 +99,7 @@ class _TelaChatState extends State<TelaChat> {
                 Text.rich(
                   TextSpan(children: [
                     TextSpan(text: itemLista["usuario"], style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                    const TextSpan(text: "   10:33 AM", style: TextStyle(color: Colors.white60, fontSize: 12))
+                    // TextSpan(text: itemLista["time"].toString().substring(11), style: TextStyle(color: Colors.white60, fontSize: 12))
                   ])
                   ),
                 const SizedBox(height: 4,),
@@ -131,9 +131,9 @@ class _TelaChatState extends State<TelaChat> {
 
   Widget buildProgress(){
       return StreamBuilder<bool>(
-        stream: telaChatController.controllerLinearProgress.stream,
+        stream: telaChatController.controllerIsSendingFile.stream,
         builder: (context, snapshot) {
-          if(snapshot.data == false){
+          if(snapshot.data == true){
             return const LinearProgressIndicator();
           }else{
             return Container();

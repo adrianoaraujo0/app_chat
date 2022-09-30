@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import 'package:rxdart/subjects.dart';
 class TelaChatController {
   final TextEditingController textoControllerEnviarMensagem = TextEditingController();
   final BehaviorSubject<bool> controllerMudarCorSinalEnviarMensagem = BehaviorSubject<bool>();
-  final BehaviorSubject<bool> controllerLinearProgress = BehaviorSubject<bool>();
+  final BehaviorSubject<bool> controllerIsSendingFile = BehaviorSubject<bool>();
   
   ScrollController scrollListController = ScrollController();
 
@@ -21,9 +22,8 @@ class TelaChatController {
   String? imagemPath;
   File? file;
   
+  PlatformFile? pickedFile;
  
-  
-
 
   ultimaMensagem() async{
     WidgetsBinding.instance.addPostFrameCallback((_){
@@ -59,7 +59,7 @@ class TelaChatController {
     
     if (imgfile == null) return;
     
-    controllerLinearProgress.sink.add(false);
+    controllerIsSendingFile.sink.add(true);
     //salvar no storage
     UploadTask uploadImage = FirebaseStorage.instance.ref().child(
     DateTime.now().millisecondsSinceEpoch.toString()
@@ -67,7 +67,7 @@ class TelaChatController {
      
   
      final TaskSnapshot taskSnapshot = await uploadImage.whenComplete(() => {
-      controllerLinearProgress.sink.add(true),
+      controllerIsSendingFile.sink.add(false),
       print("UPLOAD DO ARQUIVO COMPLETO")
      });
 
@@ -87,45 +87,45 @@ class TelaChatController {
 
 
   void selecionarArquivo(BuildContext context ,User usuario) async{
-    // Navigator.pop(context);
+    Navigator.pop(context);
 
-    // UploadTask? uploadTask;
-    // FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['jpg', 'pdf', 'doc']);
+    UploadTask? uploadTask;
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['jpg', 'pdf', 'doc']);
     
-    // if (result == null) return;
+    if (result == null) return;
 
-    // controllerLinearProgress.sink.add(false);
+    controllerIsSendingFile.sink.add(true);
 
-    // pickedFile = result.files.first;
+    pickedFile = result.files.first;
 
-    // file = File(result.files.single.path!);    
+    file = File(result.files.single.path!);    
 
-    // final path = 'files/${pickedFile!.name}';
-    // final files = File(pickedFile!.path!);
+    final path = 'files/${pickedFile!.name}';
+    final files = File(pickedFile!.path!);
 
-    // final ref = FirebaseStorage.instance.ref().child(path);
+    final ref = FirebaseStorage.instance.ref().child(path);
 
-    // uploadTask = ref.putFile(files);
+    uploadTask = ref.putFile(files);
 
-    // final snapshot = await uploadTask.whenComplete(() => {
-    //   controllerLinearProgress.sink.add(true),
-    //   print("UPLOAD DO ARQUIVO COMPLETO")
-    // });
+    final snapshot = await uploadTask.whenComplete(() => {
+      controllerIsSendingFile.sink.add(false),
+      print("UPLOAD DO ARQUIVO COMPLETO")
+    });
 
-    // final urlArquivoDownload = await snapshot.ref.getDownloadURL();
-    // print("Download Link: $urlArquivoDownload");
+    final urlArquivoDownload = await snapshot.ref.getDownloadURL();
+    print("Download Link: $urlArquivoDownload");
 
-    // FirebaseFirestore.instance.collection("chat").add({
-    //   "usuario": usuario.email,
-    //   "texto": textoControllerEnviarMensagem.text,
-    //   "imagem": null,
-    //   "arquivo": urlArquivoDownload,
-    //   "time": Timestamp.now(),
-    //   });
+    FirebaseFirestore.instance.collection("chat").add({
+      "usuario": usuario.email,
+      "texto": textoControllerEnviarMensagem.text,
+      "imagem": null,
+      "arquivo": urlArquivoDownload,
+      "time": Timestamp.now(),
+      });
   }
-  
 
-  Future abrirArquivo({required url, String? fileName}) async{
+
+  Future abrirArquivo({required url, required String? fileName}) async{
      final file = await downloadFile(url, fileName!);
      if(file == null) return;
 
