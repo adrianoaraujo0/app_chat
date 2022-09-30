@@ -3,6 +3,7 @@ import 'package:chat/ui/tela_chat/tela_chat_controller.dart';
 import 'package:chat/ui/tela_login/tela_login_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class TelaChat extends StatefulWidget {
@@ -111,11 +112,11 @@ class _TelaChatState extends State<TelaChat> {
                       },
                       if(itemLista["arquivo"] != null)...{
                         IconButton(icon: const Icon(Icons.picture_as_pdf_outlined, size: 60,), onPressed: () {
-                              
-                      },)
+                            telaChatController.abrirArquivo(url: itemLista["arquivo"], fileName: "pdf");
+                        },)
                       },
                       if(itemLista["texto"] != null)...{
-                        Text("${itemLista["texto"]}", style: const  TextStyle(color: Colors.white70, fontSize: 14)),
+                        Text("${itemLista["texto"]}", style: const TextStyle(color: Colors.white70, fontSize: 14)),
                       }
                     ],
                   ),
@@ -133,11 +134,10 @@ class _TelaChatState extends State<TelaChat> {
         stream: telaChatController.controllerLinearProgress.stream,
         builder: (context, snapshot) {
           if(snapshot.data == false){
-            return LinearProgressIndicator();
+            return const LinearProgressIndicator();
           }else{
             return Container();
           }
-       
       },);
   }
 
