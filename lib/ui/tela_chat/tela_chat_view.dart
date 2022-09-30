@@ -16,6 +16,7 @@ class TelaChat extends StatefulWidget {
 class _TelaChatState extends State<TelaChat> {
   TelaChatController telaChatController = TelaChatController();
   TelaLoginController telaLoginController = TelaLoginController();
+  bool? validationLinearProgress;
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _TelaChatState extends State<TelaChat> {
                 );
               },
             ),
+            buildProgress(),
             enviarMensagem(context),
           ],
         ),
@@ -105,10 +107,12 @@ class _TelaChatState extends State<TelaChat> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if(itemLista["imagem"] != null)...{
-                        Image.file(File(itemLista["imagem"]), height: 230),
+                        Image.network(itemLista["imagem"], height: 230),
                       },
                       if(itemLista["arquivo"] != null)...{
-                        Image.file(File(itemLista["arquivo"]), height: 230),
+                        IconButton(icon: const Icon(Icons.picture_as_pdf_outlined, size: 60,), onPressed: () {
+                              
+                      },)
                       },
                       if(itemLista["texto"] != null)...{
                         Text("${itemLista["texto"]}", style: const  TextStyle(color: Colors.white70, fontSize: 14)),
@@ -122,6 +126,19 @@ class _TelaChatState extends State<TelaChat> {
         ],
       ),
     );
+  }
+
+  Widget buildProgress(){
+      return StreamBuilder<bool>(
+        stream: telaChatController.controllerLinearProgress.stream,
+        builder: (context, snapshot) {
+          if(snapshot.data == false){
+            return LinearProgressIndicator();
+          }else{
+            return Container();
+          }
+       
+      },);
   }
 
   Widget enviarMensagem(BuildContext context) {
@@ -165,7 +182,7 @@ class _TelaChatState extends State<TelaChat> {
             stream: telaChatController.controllerMudarCorSinalEnviarMensagem.stream,
             builder: (context, snapshot) {
               return IconButton(
-                onPressed:  snapshot.data == true ? () => telaChatController.salvarMensagemFirebase(widget.usuario) : null,
+                onPressed:  snapshot.data == true ? () => telaChatController.salvarTextoFirebase(widget.usuario) : null,
                 icon: Icon(Icons.send, color: snapshot.data == true ? Colors.blue : Colors.grey,)
               );
             }
