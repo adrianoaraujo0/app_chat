@@ -45,10 +45,15 @@ class TelaChatController {
       "arquivo": null,
       "time": Timestamp.now(),
       });
-      
-    limparCampoMensagem();
 
+    convertTimeStampToData(Timestamp.now());
+
+    limparCampoMensagem();
     controllerMudarCorSinalEnviarMensagem.sink.add(false);
+  }
+
+  String convertTimeStampToData(Timestamp timestamp){ 
+    return "   ${timestamp.toDate().day}/${timestamp.toDate().month}/${timestamp.toDate().year}";
   }
 
    void abrirCamera(BuildContext context, User usuario){

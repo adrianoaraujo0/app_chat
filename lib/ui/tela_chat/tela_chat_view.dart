@@ -99,7 +99,7 @@ class _TelaChatState extends State<TelaChat> {
                 Text.rich(
                   TextSpan(children: [
                     TextSpan(text: itemLista["usuario"], style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                    // TextSpan(text: itemLista["time"].toString().substring(11), style: TextStyle(color: Colors.white60, fontSize: 12))
+                    TextSpan(text: telaChatController.convertTimeStampToData(itemLista["time"]), style: TextStyle(color: Colors.white60, fontSize: 12))
                   ])
                   ),
                 const SizedBox(height: 4,),
@@ -167,10 +167,6 @@ class _TelaChatState extends State<TelaChat> {
               )
             ]
           ),
-          // IconButton(
-          //   onPressed: () async => telaChatController.capturarImagem(widget.usuario),
-          //   icon: const Icon(Icons.add,  color: Colors.blue,)
-          // ),
           Expanded(
             child: TextField(
               onChanged: (value) => telaChatController.controllerMudarCorSinalEnviarMensagem.sink.add(value.isNotEmpty),
