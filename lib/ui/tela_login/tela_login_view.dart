@@ -1,10 +1,21 @@
 import 'package:chat/ui/tela_login/tela_login_controller.dart';
 import 'package:flutter/material.dart';
 
-class TelaLogin extends StatelessWidget {
+class TelaLogin extends StatefulWidget {
    TelaLogin({super.key});
+
+  @override
+  State<TelaLogin> createState() => _TelaLoginState();
+}
+
+class _TelaLoginState extends State<TelaLogin> {
   TelaLoginController telaLoginController = TelaLoginController();
-  
+
+  @override
+  void initState() {
+    telaLoginController.googleSignIn.signOut();
+    super.initState();
+  }
 
    @override
   Widget build(BuildContext context) {
@@ -54,5 +65,4 @@ class TelaLogin extends StatelessWidget {
       ),
     );
   }
-
 }

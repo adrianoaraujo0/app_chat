@@ -45,8 +45,7 @@ class TelaLoginController{
   }
 
   fazerLogout(BuildContext context){
-      googleSignIn.signOut();
-
+      
         Navigator.pushReplacement(
             context, 
             MaterialPageRoute(builder: (context) => TelaLogin()));

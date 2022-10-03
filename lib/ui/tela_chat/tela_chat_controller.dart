@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:camera_camera/camera_camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -50,41 +51,45 @@ class TelaChatController {
     controllerMudarCorSinalEnviarMensagem.sink.add(false);
   }
 
-
-   capturarImagem(BuildContext context ,User usuario) async {
+   void abrirCamera(BuildContext context, User usuario){
     Navigator.pop(context);
-    
-    //capturar imagem
-    final XFile? imgfile = await ImagePicker().pickImage(source: ImageSource.camera);
-    
-    if (imgfile == null) return;
-    
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CameraCamera(onFile: (file){
+            uploadImageFirebase(usuario, file);
+            Navigator.pop(context);
+        })
+      ),
+    );
+   } 
+
+  void uploadImageFirebase(User usuario, File file) async{
     controllerIsSendingFile.sink.add(true);
+
     //salvar no storage
     UploadTask uploadImage = FirebaseStorage.instance.ref().child(
     DateTime.now().millisecondsSinceEpoch.toString()
-    ).putFile(File(imgfile.path));
+    ).putFile(File(file.path));
      
-  
      final TaskSnapshot taskSnapshot = await uploadImage.whenComplete(() => {
-      controllerIsSendingFile.sink.add(false),
-      print("UPLOAD DO ARQUIVO COMPLETO")
+      controllerIsSendingFile.sink.add(false)
      });
 
-      final urlImageDownload = await taskSnapshot.ref.getDownloadURL();
-      print("Download Link: $urlImageDownload");
+    //pega link da image no storage
+    final urlImageDownload = await taskSnapshot.ref.getDownloadURL();
 
-      FirebaseFirestore.instance.collection("chat").add({
-      "usuario": usuario.email,
-      "texto": textoControllerEnviarMensagem.text,
-      "imagem": urlImageDownload,
-      "arquivo": null,
-      "time": Timestamp.now(),
-      });
-      limparCampoMensagem();
-  }
-
-
+    //add o link na collection
+    FirebaseFirestore.instance.collection("chat").add({
+    "usuario": usuario.email,
+    "texto": textoControllerEnviarMensagem.text,
+    "imagem": urlImageDownload,
+    "arquivo": null,
+    "time": Timestamp.now(),
+    });
+    limparCampoMensagem();
+   }
 
   void selecionarArquivo(BuildContext context ,User usuario) async{
     Navigator.pop(context);

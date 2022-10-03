@@ -155,7 +155,7 @@ class _TelaChatState extends State<TelaChat> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () async => telaChatController.capturarImagem(context, widget.usuario),
+                      onPressed: () async => telaChatController.abrirCamera(context, widget.usuario),
                       icon: const Icon(Icons.photo_camera, size: 30)
                     ),
                     IconButton(
