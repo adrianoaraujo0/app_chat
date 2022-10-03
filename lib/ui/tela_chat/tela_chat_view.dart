@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:camera/camera.dart';
 import 'package:chat/ui/tela_chat/tela_chat_controller.dart';
 import 'package:chat/ui/tela_login/tela_login_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,6 +19,9 @@ class _TelaChatState extends State<TelaChat> {
   TelaChatController telaChatController = TelaChatController();
   TelaLoginController telaLoginController = TelaLoginController();
   bool? validationLinearProgress;
+
+  List<CameraDescription> cameras = [];
+  CameraController? controller;
 
   @override
   void initState() {
@@ -155,14 +159,16 @@ class _TelaChatState extends State<TelaChat> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () async => telaChatController.abrirCamera(context, widget.usuario),
+                      onPressed: () async => telaChatController.newAbrirCamera(context, widget.usuario),
                       icon: const Icon(Icons.photo_camera, size: 30)
                     ),
-                    IconButton(
-                      onPressed: () async => telaChatController.selecionarArquivo(context ,widget.usuario),
-                      icon: const Icon(Icons.upload_file, size: 30)
-                    ),
                   ],
+                )
+              ),
+              PopupMenuItem(
+                child: IconButton(
+                  onPressed: () async => telaChatController.selecionarArquivo(context ,widget.usuario),
+                  icon: const Icon(Icons.upload_file, size: 30)
                 )
               )
             ]
@@ -187,4 +193,38 @@ class _TelaChatState extends State<TelaChat> {
       ),
     );
   }
+
+  //  Widget _cameraPreviewWidget() {
+  //   final CameraController? cameraController = controller;
+
+  //   if (cameraController == null || !cameraController.value.isInitialized) {
+  //     return const Text(
+  //       'Tap a camera',
+  //       style: TextStyle(
+  //         color: Colors.white,
+  //         fontSize: 24.0,
+  //         fontWeight: FontWeight.w900,
+  //       ),
+  //     );
+  //   } else {
+  //     return Listener(
+  //       child: CameraPreview(
+  //         controller!,
+  //         child: LayoutBuilder(
+  //             builder: (BuildContext context, BoxConstraints constraints) {
+  //           return GestureDetector(
+  //             behavior: HitTestBehavior.opaque,
+  //           );
+  //         }),
+  //       ),
+  //     );
+  //   }
+  // }
+
+  Widget cameraPreviewWidget(BuildContext cntext){
+    return const Text('Tap a camera', style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.w900));
+  }
+
+
+
 }

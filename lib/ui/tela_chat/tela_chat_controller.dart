@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:camera_camera/camera_camera.dart';
+import 'package:camera/camera.dart';
+import 'package:chat/ui/camera/camera_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -19,7 +20,7 @@ class TelaChatController {
   
   ScrollController scrollListController = ScrollController();
 
-  User? user;
+
   String? imagemPath;
   File? file;
   
@@ -57,26 +58,34 @@ class TelaChatController {
   }
 
    void abrirCamera(BuildContext context, User usuario){
-    Navigator.pop(context);
+    // Navigator.pop(context);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => CameraCamera(onFile: (file){
-            uploadImageFirebase(usuario, file);
-            Navigator.pop(context);
-        })
-      ),
-    );
-   } 
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (_) => CameraCamera(onFile: (file){
+    //         uploadImageFirebase(usuario, file);
+    //         Navigator.pop(context);
+    //     })
+    //   ),
+    // );
+   }
+  
+  void newAbrirCamera(BuildContext context, User usuario) async{
+    var cameras = await availableCameras();
+    var controller = CameraController(cameras[0], ResolutionPreset.max);
+    await controller.initialize();
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidget(cameras, controller, usuario)));
+    await controller.dispose();
+  }
 
-  void uploadImageFirebase(User usuario, File file) async{
+  void uploadImageFirebase(User usuario, String path) async{
     controllerIsSendingFile.sink.add(true);
 
     //salvar no storage
     UploadTask uploadImage = FirebaseStorage.instance.ref().child(
     DateTime.now().millisecondsSinceEpoch.toString()
-    ).putFile(File(file.path));
+    ).putFile(File(path));
      
      final TaskSnapshot taskSnapshot = await uploadImage.whenComplete(() => {
       controllerIsSendingFile.sink.add(false)
