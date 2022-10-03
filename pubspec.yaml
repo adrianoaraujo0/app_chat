@@ -26,9 +26,10 @@ dependencies:
   dio: ^4.0.6
   path_provider: ^2.0.11
   open_file: ^3.2.1
-  camera_camera: ^2.0.2
+  # camera_camera: ^2.0.2
+  camera: ^0.10.0+3
 
-  rxdart: ^0.27.5
+  rxdart: ^0.26.0
 
   cupertino_icons: ^1.0.2
 
