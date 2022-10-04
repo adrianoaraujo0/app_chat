@@ -19,19 +19,34 @@ class _MyWidgetState extends State<MyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CameraPreview(
-        widget.controller,    
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            Stack(
+              children: [
+                 CameraPreview(
+                   widget.controller,    
+                 ),
+              ],
+            ),
+           const SizedBox(height: 30,),
+           Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(color: Colors.white ,borderRadius: BorderRadius.circular(100)),
+              child:  IconButton(
+                   icon: const Icon(Icons.camera, color: Colors.grey, size: 50,),
+                    onPressed: ()async {
+                    XFile file = await widget.controller.takePicture();
+                    print(file.path);
+                    telaChatController.uploadImageFirebase(widget.usuario, file.path);
+                },
+             ),
+           ),
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-         XFile file = await widget.controller.takePicture();
-         print(file.path);
-        telaChatController.uploadImageFirebase(widget.usuario, file.path);
-        },
-        child: Icon(Icons.camera),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat, 
     );
   }
 }

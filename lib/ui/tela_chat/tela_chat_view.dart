@@ -22,6 +22,7 @@ class _TelaChatState extends State<TelaChat> {
 
   List<CameraDescription> cameras = [];
   CameraController? controller;
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -46,7 +47,6 @@ class _TelaChatState extends State<TelaChat> {
             StreamBuilder(
               stream: FirebaseFirestore.instance.collection("chat").orderBy("time").snapshots(),
               builder: (context, snapshot) {
-                
                 if (snapshot.data == null) { 
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -63,6 +63,10 @@ class _TelaChatState extends State<TelaChat> {
           ],
         ),
       ),
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   print(focusNode.hasPrimaryFocus);
+      //   // focusNode.unfocus();
+      // },),
     );
   }
 
@@ -70,6 +74,7 @@ class _TelaChatState extends State<TelaChat> {
     return Scrollbar(
       thickness: 8,
       child: ListView.builder(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         controller: telaChatController.scrollListController,
         itemCount: docs.length,
         itemBuilder: (context, index) => itemMensagem(docs[index]),
@@ -147,11 +152,39 @@ class _TelaChatState extends State<TelaChat> {
 
   Widget enviarMensagem(BuildContext context) {
     return Container(
-      color: Colors.black12,
+      height: 70,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        color: Colors.black12,),
       child: Row(
         children: [
-          PopupMenuButton( 
-            icon: const Icon(Icons.add,  color: Colors.blue,  size: 30),
+          builderPopMenu(),
+          Expanded(
+            child: TextField(
+              focusNode: focusNode,
+              onChanged: (value) => telaChatController.controllerMudarCorSinalEnviarMensagem.sink.add(value.isNotEmpty),
+              controller: telaChatController.textoControllerEnviarMensagem,
+              decoration: const InputDecoration.collapsed(hintText: "Enviar mensagem")
+            ),
+          ),
+          StreamBuilder<bool>(
+            stream: telaChatController.controllerMudarCorSinalEnviarMensagem.stream,
+            builder: (context, snapshot) {
+              return IconButton(
+                onPressed:  snapshot.data == true ? () => telaChatController.salvarTextoFirebase(widget.usuario) : null,
+                icon: Icon(Icons.send, color: snapshot.data == true ? Colors.blue : Colors.grey,)
+              );
+            }
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget builderPopMenu(){
+    return PopupMenuButton(
+            icon: const Icon(Icons.add, color: Colors.blue,  size: 30),
             itemBuilder: (context) => [
               PopupMenuItem(
                 height: 40, 
@@ -172,54 +205,8 @@ class _TelaChatState extends State<TelaChat> {
                 )
               )
             ]
-          ),
-          Expanded(
-            child: TextField(
-              onChanged: (value) => telaChatController.controllerMudarCorSinalEnviarMensagem.sink.add(value.isNotEmpty),
-              controller: telaChatController.textoControllerEnviarMensagem,
-              decoration: const InputDecoration.collapsed(hintText: "Enviar mensagem")
-            ),
-          ),
-          StreamBuilder<bool>(
-            stream: telaChatController.controllerMudarCorSinalEnviarMensagem.stream,
-            builder: (context, snapshot) {
-              return IconButton(
-                onPressed:  snapshot.data == true ? () => telaChatController.salvarTextoFirebase(widget.usuario) : null,
-                icon: Icon(Icons.send, color: snapshot.data == true ? Colors.blue : Colors.grey,)
-              );
-            }
-          ),
-        ],
-      ),
-    );
+          );
   }
-
-  //  Widget _cameraPreviewWidget() {
-  //   final CameraController? cameraController = controller;
-
-  //   if (cameraController == null || !cameraController.value.isInitialized) {
-  //     return const Text(
-  //       'Tap a camera',
-  //       style: TextStyle(
-  //         color: Colors.white,
-  //         fontSize: 24.0,
-  //         fontWeight: FontWeight.w900,
-  //       ),
-  //     );
-  //   } else {
-  //     return Listener(
-  //       child: CameraPreview(
-  //         controller!,
-  //         child: LayoutBuilder(
-  //             builder: (BuildContext context, BoxConstraints constraints) {
-  //           return GestureDetector(
-  //             behavior: HitTestBehavior.opaque,
-  //           );
-  //         }),
-  //       ),
-  //     );
-  //   }
-  // }
 
   Widget cameraPreviewWidget(BuildContext cntext){
     return const Text('Tap a camera', style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.w900));
