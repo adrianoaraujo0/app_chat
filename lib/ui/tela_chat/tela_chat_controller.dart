@@ -8,7 +8,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/subjects.dart';
@@ -17,8 +16,9 @@ class TelaChatController {
   final TextEditingController textoControllerEnviarMensagem = TextEditingController();
   final BehaviorSubject<bool> controllerMudarCorSinalEnviarMensagem = BehaviorSubject<bool>();
   final BehaviorSubject<bool> controllerIsSendingFile = BehaviorSubject<bool>();
-  int c = 0;
+
   ScrollController scrollListController = ScrollController();
+  List<CameraDescription>? cameras;
 
   String? imagemPath;
   File? file;
@@ -74,10 +74,11 @@ class TelaChatController {
     var cameras = await availableCameras();
     var controller = CameraController(cameras[0], ResolutionPreset.max);
     await controller.initialize();
-    await Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidget(cameras, controller, usuario)));
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage(cameras, controller, usuario)));
     await controller.dispose();
-    
   }
+
+  
 
   void uploadImageFirebase(User usuario, String path, BuildContext context) async{
     controllerIsSendingFile.sink.add(true);
@@ -174,4 +175,3 @@ class TelaChatController {
 
 
 }
-

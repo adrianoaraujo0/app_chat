@@ -183,29 +183,28 @@ class _TelaChatState extends State<TelaChat> {
 
   Widget builderPopMenu(){
     return PopupMenuButton(
-      
-            icon: const Icon(Icons.add, color: Colors.blue,  size: 30),
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                height: 40, 
-                child:Row( 
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () async => telaChatController.newAbrirCamera(context, widget.usuario),
-                      icon: const Icon(Icons.photo_camera, size: 30)
-                    ),
-                  ],
-                )
+      icon: const Icon(Icons.add, color: Colors.blue,  size: 30),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          height: 40, 
+          child:Row( 
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                onPressed: () async => telaChatController.newAbrirCamera(context, widget.usuario),
+                icon: const Icon(Icons.photo_camera, size: 30)
               ),
-              PopupMenuItem(
-                child: IconButton(
-                  onPressed: () async => telaChatController.selecionarArquivo(context ,widget.usuario),
-                  icon: const Icon(Icons.upload_file, size: 30)
-                )
-              )
-            ]
-          );
+            ],
+          )
+        ),
+        PopupMenuItem(
+          child: IconButton(
+            onPressed: () async => telaChatController.selecionarArquivo(context, widget.usuario),
+            icon: const Icon(Icons.upload_file, size: 30)
+          )
+        )
+      ]
+    );
   }
 
   Widget cameraPreviewWidget(BuildContext cntext){

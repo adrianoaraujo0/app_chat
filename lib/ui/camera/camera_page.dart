@@ -1,20 +1,21 @@
 import 'package:camera/camera.dart';
+import 'package:chat/ui/camera/view_image.dart';
 import 'package:chat/ui/tela_chat/tela_chat_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class MyWidget extends StatefulWidget {
+class CameraPage extends StatefulWidget {
   final cameras;
   final CameraController controller;
   final User usuario;
 
-  const MyWidget(this.cameras, this.controller, this.usuario,{super.key,});
+  const CameraPage(this.cameras, this.controller, this.usuario,{super.key,});
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
+  State<CameraPage> createState() => _CameraPageState();
 }
 
-class _MyWidgetState extends State<MyWidget> {
+class _CameraPageState extends State<CameraPage> {
   TelaChatController telaChatController = TelaChatController();
 
   @override
@@ -43,7 +44,7 @@ class _MyWidgetState extends State<MyWidget> {
                        icon: const Icon(Icons.camera, color: Colors.grey, size: 50,),
                         onPressed: () async {
                         XFile file = await widget.controller.takePicture();
-                        telaChatController.uploadImageFirebase(widget.usuario, file.path, context);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ViewImage(image: file.path, usuario: widget.usuario,)));
                         },
                    ) 
                  : const Center(child: CircularProgressIndicator(strokeWidth: 5,))
