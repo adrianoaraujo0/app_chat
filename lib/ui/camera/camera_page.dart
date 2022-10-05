@@ -22,6 +22,7 @@ class _CameraPageState extends State<CameraPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(),
         body: Column(
           children: [
             Stack(
@@ -31,13 +32,13 @@ class _CameraPageState extends State<CameraPage> {
                  ),
               ],
             ),
-           const SizedBox(height: 30,),
+           const SizedBox(height: 0,),
            StreamBuilder<bool>(
              stream: telaChatController.controllerIsSendingFile.stream,
              builder: (context, snapshot) {
                return Container(
-                  width: 70,
-                  height: 70,
+                  width: 0,
+                  height: 0,
                   decoration: BoxDecoration(color: Colors.white ,borderRadius: BorderRadius.circular(100)),
                   child: snapshot.data == null || snapshot.data == false ?
                    IconButton(
