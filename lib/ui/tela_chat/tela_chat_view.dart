@@ -4,7 +4,6 @@ import 'package:chat/ui/tela_chat/tela_chat_controller.dart';
 import 'package:chat/ui/tela_login/tela_login_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class TelaChat extends StatefulWidget {
@@ -184,6 +183,7 @@ class _TelaChatState extends State<TelaChat> {
 
   Widget builderPopMenu(){
     return PopupMenuButton(
+      
             icon: const Icon(Icons.add, color: Colors.blue,  size: 30),
             itemBuilder: (context) => [
               PopupMenuItem(

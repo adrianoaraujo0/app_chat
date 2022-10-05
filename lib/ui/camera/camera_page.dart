@@ -31,18 +31,24 @@ class _MyWidgetState extends State<MyWidget> {
               ],
             ),
            const SizedBox(height: 30,),
-           Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(color: Colors.white ,borderRadius: BorderRadius.circular(100)),
-              child:  IconButton(
-                   icon: const Icon(Icons.camera, color: Colors.grey, size: 50,),
-                    onPressed: ()async {
-                    XFile file = await widget.controller.takePicture();
-                    print(file.path);
-                    telaChatController.uploadImageFirebase(widget.usuario, file.path);
-                },
-             ),
+           StreamBuilder<bool>(
+             stream: telaChatController.controllerIsSendingFile.stream,
+             builder: (context, snapshot) {
+               return Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(color: Colors.white ,borderRadius: BorderRadius.circular(100)),
+                  child: snapshot.data == null || snapshot.data == false ?
+                   IconButton(
+                       icon: const Icon(Icons.camera, color: Colors.grey, size: 50,),
+                        onPressed: () async {
+                        XFile file = await widget.controller.takePicture();
+                        telaChatController.uploadImageFirebase(widget.usuario, file.path, context);
+                        },
+                   ) 
+                 : const Center(child: CircularProgressIndicator(strokeWidth: 5,))
+               );
+             }
            ),
           ],
         ),

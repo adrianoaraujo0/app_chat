@@ -17,9 +17,8 @@ class TelaChatController {
   final TextEditingController textoControllerEnviarMensagem = TextEditingController();
   final BehaviorSubject<bool> controllerMudarCorSinalEnviarMensagem = BehaviorSubject<bool>();
   final BehaviorSubject<bool> controllerIsSendingFile = BehaviorSubject<bool>();
-  
+  int c = 0;
   ScrollController scrollListController = ScrollController();
-
 
   String? imagemPath;
   File? file;
@@ -77,9 +76,10 @@ class TelaChatController {
     await controller.initialize();
     await Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidget(cameras, controller, usuario)));
     await controller.dispose();
+    
   }
 
-  void uploadImageFirebase(User usuario, String path) async{
+  void uploadImageFirebase(User usuario, String path, BuildContext context) async{
     controllerIsSendingFile.sink.add(true);
 
     //salvar no storage
@@ -88,9 +88,9 @@ class TelaChatController {
     ).putFile(File(path));
      
      final TaskSnapshot taskSnapshot = await uploadImage.whenComplete(() => {
-      controllerIsSendingFile.sink.add(false)
+      controllerIsSendingFile.sink.add(false),
      });
-
+    
     //pega link da image no storage
     final urlImageDownload = await taskSnapshot.ref.getDownloadURL();
 
