@@ -71,11 +71,12 @@ class TelaChatController {
    }
   
   void newAbrirCamera(BuildContext context, User usuario) async{
+    Navigator.pop(context);
+    
     var cameras = await availableCameras();
     var controller = CameraController(cameras[0], ResolutionPreset.max);
     await controller.initialize();
     await Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage(cameras, controller, usuario)));
-    
     await controller.dispose();
   }
 
