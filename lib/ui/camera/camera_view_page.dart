@@ -1,28 +1,27 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:chat/ui/camera/camera_view_controller.dart';
 import 'package:chat/ui/camera/list_images_page.dart';
 import 'package:chat/ui/tela_chat/tela_chat_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'dart:io';
 
-
-class CameraPage extends StatefulWidget {
+class CameraViewPage extends StatefulWidget {
   final cameras;
   final CameraController controller;
   final User usuario;
 
-  const CameraPage(this.cameras, this.controller, this.usuario,{super.key,});
+  const CameraViewPage(this.cameras, this.controller, this.usuario,{super.key,});
 
   @override
-  State<CameraPage> createState() => _CameraPageState();
+  State<CameraViewPage> createState() => _CameraViewPageState();
 }
 
-class _CameraPageState extends State<CameraPage> {
+class _CameraViewPageState extends State<CameraViewPage> {
   TelaChatController telaChatController = TelaChatController();
-  List<String> pathList = [];
+  CameraViewController cameraViewController = CameraViewController();
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +48,9 @@ class _CameraPageState extends State<CameraPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          pathList.isNotEmpty ?
+                          cameraViewController.pathList.isNotEmpty ?
                             InkWell(
-                             onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ViewImage(paths: pathList, usuario: widget.usuario)));}, 
+                             onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ViewImage(paths: cameraViewController.pathList, usuario: widget.usuario)));}, 
                               child: Container(
                                 width: 70,
                                 height: 60,
@@ -60,7 +59,7 @@ class _CameraPageState extends State<CameraPage> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                     fit: BoxFit.fill,
-                                    image: FileImage(File(pathList.last)
+                                    image: FileImage(File(cameraViewController.pathList.last)
                                     )
                                   )
                                 ),
@@ -76,8 +75,8 @@ class _CameraPageState extends State<CameraPage> {
                                     icon: const Icon(Icons.camera, color: Colors.grey, size: 50,),
                                     onPressed: () async {
                                       XFile file = await widget.controller.takePicture();
-                                      pathList.add(file.path);
-                                      print(pathList.where((element) => element.isNotEmpty));
+                                      cameraViewController.addImage(file.path);
+                                      print(cameraViewController.pathList.where((element) => element.isNotEmpty));
                                       telaChatController.controllerIsSendingFile.add(false);
                                       // Navigator.push(context, MaterialPageRoute(builder: (context) => ViewImage(image: file.path, usuario: widget.usuario,)));
                                     },

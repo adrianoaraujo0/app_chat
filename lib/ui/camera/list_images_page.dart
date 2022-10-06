@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chat/ui/camera/preview_image.dart';
+import 'package:chat/ui/camera/preview_image_page.dart';
 import 'package:chat/ui/tela_chat/tela_chat_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class ViewImage extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
-                    onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewImage())); },
+                    onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewImage(image: paths[index],))); },
                     child: Container( 
                       height: 40,
                       width: 40,

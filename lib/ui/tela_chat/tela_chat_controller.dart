@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:chat/ui/camera/camera_page.dart';
+import 'package:chat/ui/camera/camera_view_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -76,7 +76,7 @@ class TelaChatController {
     var cameras = await availableCameras();
     var controller = CameraController(cameras[0], ResolutionPreset.max);
     await controller.initialize();
-    await Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage(cameras, controller, usuario)));
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => CameraViewPage(cameras, controller, usuario)));
     await controller.dispose();
   }
 
