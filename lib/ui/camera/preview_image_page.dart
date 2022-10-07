@@ -1,14 +1,15 @@
 import 'dart:io';
 
-import 'package:chat/ui/camera/list_images_page.dart';
+import 'package:chat/ui/camera/list_image_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class PreviewImage extends StatelessWidget {
   String image;
+  int index;
+  List<String> pathList;
 
-  PreviewImage({required this.image});
+  PreviewImage({required this.pathList ,required this.image, required this.index});
+  ListImageController listImageController = ListImageController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,12 @@ class PreviewImage extends StatelessWidget {
             bottom: -5,
             left: 180,
             child: IconButton(
-            onPressed: () { },
-            icon: Icon(Icons.delete),
+            onPressed: () { 
+              pathList.removeAt(index);
+              ListImageController.updateGridView.sink.add(true); 
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.delete),
               ),
           ),
         ],

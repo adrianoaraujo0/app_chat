@@ -56,21 +56,7 @@ class TelaChatController {
     return "   ${timestamp.toDate().day}/${timestamp.toDate().month}/${timestamp.toDate().year}";
   }
 
-   void abrirCamera(BuildContext context, User usuario){
-    // Navigator.pop(context);
-
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (_) => CameraCamera(onFile: (file){
-    //         uploadImageFirebase(usuario, file);
-    //         Navigator.pop(context);
-    //     })
-    //   ),
-    // );
-   }
-  
-  void newAbrirCamera(BuildContext context, User usuario) async{
+  void AbrirCamera(BuildContext context, User usuario) async{
     Navigator.pop(context);
     
     var cameras = await availableCameras();

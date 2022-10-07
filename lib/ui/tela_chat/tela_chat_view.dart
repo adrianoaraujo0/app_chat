@@ -62,10 +62,6 @@ class _TelaChatState extends State<TelaChat> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   print(focusNode.hasPrimaryFocus);
-      //   // focusNode.unfocus();
-      // },),
     );
   }
 
@@ -107,7 +103,7 @@ class _TelaChatState extends State<TelaChat> {
                 Text.rich(
                   TextSpan(children: [
                     TextSpan(text: itemLista["usuario"], style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                    TextSpan(text: telaChatController.convertTimeStampToData(itemLista["time"]), style: TextStyle(color: Colors.white60, fontSize: 12))
+                    TextSpan(text: telaChatController.convertTimeStampToData(itemLista["time"]), style: const TextStyle(color: Colors.white60, fontSize: 12))
                   ])
                   ),
                 const SizedBox(height: 4,),
@@ -191,7 +187,7 @@ class _TelaChatState extends State<TelaChat> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                onPressed: () async => telaChatController.newAbrirCamera(context, widget.usuario),
+                onPressed: () async => telaChatController.AbrirCamera(context, widget.usuario),
                 icon: const Icon(Icons.photo_camera, size: 30)
               ),
             ],
@@ -210,7 +206,4 @@ class _TelaChatState extends State<TelaChat> {
   Widget cameraPreviewWidget(BuildContext cntext){
     return const Text('Tap a camera', style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.w900));
   }
-
-
-
 }

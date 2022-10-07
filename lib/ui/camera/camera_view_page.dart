@@ -20,7 +20,7 @@ class CameraViewPage extends StatefulWidget {
 
 class _CameraViewPageState extends State<CameraViewPage> {
   TelaChatController telaChatController = TelaChatController();
-  CameraViewController cameraViewController = CameraViewController();
+  final List<String> pathList = [];
  
 
   @override
@@ -48,9 +48,12 @@ class _CameraViewPageState extends State<CameraViewPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          cameraViewController.pathList.isNotEmpty ?
+                          pathList.isNotEmpty ?
                             InkWell(
-                             onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ViewImage(paths: cameraViewController.pathList, usuario: widget.usuario)));}, 
+                             onTap: () async {
+                             await Navigator.push(context, MaterialPageRoute(builder: (context) => ListImagePage(pathList: pathList, usuario: widget.usuario)));
+                             telaChatController.controllerIsSendingFile.sink.add(false);
+                             }, 
                               child: Container(
                                 width: 70,
                                 height: 60,
@@ -59,7 +62,7 @@ class _CameraViewPageState extends State<CameraViewPage> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                     fit: BoxFit.fill,
-                                    image: FileImage(File(cameraViewController.pathList.last)
+                                    image: FileImage(File(pathList.last)
                                     )
                                   )
                                 ),
@@ -75,9 +78,8 @@ class _CameraViewPageState extends State<CameraViewPage> {
                                     icon: const Icon(Icons.camera, color: Colors.grey, size: 50,),
                                     onPressed: () async {
                                       XFile file = await widget.controller.takePicture();
-                                      cameraViewController.addImage(file.path);
-                                      print(cameraViewController.pathList.where((element) => element.isNotEmpty));
-                                      telaChatController.controllerIsSendingFile.add(false);
+                                      pathList.add(file.path);
+                                      telaChatController.controllerIsSendingFile.sink.add(false);
                                       // Navigator.push(context, MaterialPageRoute(builder: (context) => ViewImage(image: file.path, usuario: widget.usuario,)));
                                     },
                               ) 
