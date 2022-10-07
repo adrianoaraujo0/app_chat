@@ -68,7 +68,7 @@ class TelaChatController {
 
   
 
-  void uploadImageFirebase(User usuario, String path, BuildContext context) async{
+  Future<void> uploadImageFirebase(User usuario, String path, BuildContext context) async{
     controllerIsSendingFile.sink.add(true);
 
     //salvar no storage
@@ -77,7 +77,6 @@ class TelaChatController {
     ).putFile(File(path));
      
      final TaskSnapshot taskSnapshot = await uploadImage.whenComplete(() => {
-      controllerIsSendingFile.sink.add(false),
      });
     
     //pega link da image no storage

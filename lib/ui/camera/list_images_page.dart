@@ -33,7 +33,7 @@ class ListImagePage extends StatelessWidget {
                         child: InkWell(
                           onTap: ()async {
                             await Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewImage(pathList: pathList ,image: pathList[index], index: index,)));
-                            if(pathList.isEmpty){
+                            if(pathList.isEmpty){  
                               Navigator.pop(context);
                             }   
                           },
