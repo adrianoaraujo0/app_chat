@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 class ListImagePage extends StatelessWidget {
   List<String> pathList;
   final User usuario;
-  
 
   ListImagePage({required this.pathList, required this.usuario});
   ListImageController listImageController = ListImageController();
@@ -25,7 +24,7 @@ class ListImagePage extends StatelessWidget {
             children: [
               Expanded(
                 child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                     itemCount: pathList.length,
                     itemBuilder: (context, index) { 
                       return Padding(
@@ -36,6 +35,9 @@ class ListImagePage extends StatelessWidget {
                             if(pathList.isEmpty){  
                               Navigator.pop(context);
                             }   
+                          },
+                          onLongPress: () {
+                           ListImageController.updateGridView.sink.add(true);
                           },
                           child: Container( 
                             height: 40,

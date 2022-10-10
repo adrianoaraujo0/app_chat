@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/subjects.dart';
 
 class TelaChatController {
+  
   final TextEditingController textoControllerEnviarMensagem = TextEditingController();
   final BehaviorSubject<bool> controllerMudarCorSinalEnviarMensagem = BehaviorSubject<bool>();
   final BehaviorSubject<bool> controllerIsSendingFile = BehaviorSubject<bool>();
@@ -24,6 +25,8 @@ class TelaChatController {
   File? file;
   
   PlatformFile? pickedFile;
+
+  CameraController? cameraController;
  
 
   ultimaMensagem() async{
@@ -56,17 +59,13 @@ class TelaChatController {
     return "   ${timestamp.toDate().day}/${timestamp.toDate().month}/${timestamp.toDate().year}";
   }
 
-  void AbrirCamera(BuildContext context, User usuario) async{
+  void abrirCamera(BuildContext context, User usuario) async{
     Navigator.pop(context);
-    
     var cameras = await availableCameras();
-    var controller = CameraController(cameras[0], ResolutionPreset.max);
-    await controller.initialize();
-    await Navigator.push(context, MaterialPageRoute(builder: (context) => CameraViewPage(cameras, controller, usuario)));
-    await controller.dispose();
+     cameraController = CameraController(cameras[0], ResolutionPreset.max);
+    await cameraController!.initialize();
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => CameraViewPage(cameras, cameraController!, usuario)));
   }
-
-  
 
   Future<void> uploadImageFirebase(User usuario, String path, BuildContext context) async{
     controllerIsSendingFile.sink.add(true);
@@ -91,6 +90,9 @@ class TelaChatController {
     "time": Timestamp.now(),
     });
     limparCampoMensagem();
+
+    Navigator.pop(context);
+    await cameraController!.dispose();
    }
 
   void selecionarArquivo(BuildContext context ,User usuario) async{

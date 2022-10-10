@@ -1,5 +1,19 @@
 android/annotation/SuppressLint.class
 android/annotation/TargetApi.class
+android/support/v4/media/MediaBrowserCompat$MediaItem$Flags.class
+android/support/v4/media/MediaMetadataCompat$BitmapKey.class
+android/support/v4/media/MediaMetadataCompat$LongKey.class
+android/support/v4/media/MediaMetadataCompat$RatingKey.class
+android/support/v4/media/MediaMetadataCompat$TextKey.class
+android/support/v4/media/RatingCompat$StarStyle.class
+android/support/v4/media/RatingCompat$Style.class
+android/support/v4/media/session/MediaSessionCompat$SessionFlags.class
+android/support/v4/media/session/PlaybackStateCompat$Actions.class
+android/support/v4/media/session/PlaybackStateCompat$ErrorCode.class
+android/support/v4/media/session/PlaybackStateCompat$MediaKeyAction.class
+android/support/v4/media/session/PlaybackStateCompat$RepeatMode.class
+android/support/v4/media/session/PlaybackStateCompat$ShuffleMode.class
+android/support/v4/media/session/PlaybackStateCompat$State.class
 androidx/annotation/AnimRes.class
 androidx/annotation/AnimatorRes.class
 androidx/annotation/AnyRes.class
@@ -82,6 +96,8 @@ androidx/browser/customtabs/CustomTabsService$Result.class
 androidx/browser/trusted/ScreenOrientation$LockType.class
 androidx/browser/trusted/sharing/ShareTarget$EncodingType.class
 androidx/browser/trusted/sharing/ShareTarget$RequestMethod.class
+androidx/coordinatorlayout/widget/CoordinatorLayout$DefaultBehavior.class
+androidx/coordinatorlayout/widget/CoordinatorLayout$DispatchChangeEvent.class
 androidx/core/app/CoreComponentFactory$CompatWrapped.class
 androidx/core/app/CoreComponentFactory.class
 androidx/core/app/FrameMetricsAggregator$MetricType.class
@@ -123,6 +139,9 @@ androidx/exifinterface/media/ExifInterface$ExifStreamType.class
 androidx/exifinterface/media/ExifInterface$IfdType.class
 androidx/lifecycle/Lifecycle$Event.class
 androidx/lifecycle/OnLifecycleEvent.class
+androidx/media/AudioAttributesCompat$AttributeContentType.class
+androidx/media/AudioAttributesCompat$AttributeUsage.class
+androidx/media/VolumeProviderCompat$ControlType.class
 androidx/multidex/MultiDex$V14$ElementConstructor.class
 androidx/multidex/MultiDex$V14$ICSElementConstructor.class
 androidx/multidex/MultiDex$V14$JBMR11ElementConstructor.class
@@ -137,6 +156,7 @@ androidx/multidex/MultiDexExtractor$ExtractedDex.class
 androidx/multidex/MultiDexExtractor.class
 androidx/multidex/ZipUtil$CentralDirectory.class
 androidx/multidex/ZipUtil.class
+androidx/swiperefreshlayout/widget/CircularProgressDrawable$ProgressDrawableSize.class
 androidx/versionedparcelable/NonParcelField.class
 androidx/versionedparcelable/ParcelField.class
 androidx/versionedparcelable/VersionedParcelize.class
